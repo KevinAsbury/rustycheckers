@@ -5,7 +5,7 @@ by Kevin Hoffman
 
 ## Instructions
 To run:
-'
+```
 cargo build
 cargo run
-'
+```
