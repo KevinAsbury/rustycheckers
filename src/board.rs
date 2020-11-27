@@ -73,20 +73,19 @@ impl Coordinate {
 
         moves.into_iter()
     }
+}
 
-    #[derive(Debug, Clone, PartialEq, Copy)]
-    pub struct Move {
-        pub from: Coordinate,
-        pub to: Coordinate,
-    }
+#[derive(Debug, Clone, PartialEq, Copy)]
+pub struct Move {
+    pub from: Coordinate,
+    pub to: Coordinate,
+}
 
-    impl Move {
-        pub fn new(from: (usize, usize), to: (usize, usize)) -> Move {
-            Move {
-                from: Coordinate(from.0, from.1),
-                to: Coordinate(to.0, to.1),
-            }
+impl Move {
+    pub fn new(from: (usize, usize), to: (usize, usize)) -> Move {
+        Move {
+            from: Coordinate(from.0, from.1),
+            to: Coordinate(to.0, to.1),
         }
     }
 }
-
