@@ -11,8 +11,10 @@ The webserver requires Python3 installed.
 Make installed on your OS. Windows users can run this through the linux subsystem.
 
 ## Instructions
-To build and start webserver open a terminal and type:
+In a terminal type:
 ```
+git clone https://github.com/KevinAsbury/rustycheckers.git
+cd rustycheckers/
 make
 ```
 Open a web browser and goto localhost:8000.
