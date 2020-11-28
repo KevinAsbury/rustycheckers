@@ -1,5 +1,5 @@
 # Rusty Checkers
-A checkers game written in Rust from the book:
+An introduction to WebAssembly, this is a checkers game written in Rust from the book:
 Programming Webassembly with Rust: Unified
 by Kevin Hoffman
 
