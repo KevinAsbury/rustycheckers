@@ -3,8 +3,14 @@ A checkers game written in Rust from the book:
 Programming Webassembly with Rust: Unified
 by Kevin Hoffman
 
-## Instructions
+## Requirements
+Rust: https://www.rust-lang.org/
+
 The webserver requires Python3 installed.
+
+Make installed on your OS. Windows users can run this through the linux subsystem.
+
+## Instructions
 To build and start webserver open a terminal and type:
 ```
 make
