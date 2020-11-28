@@ -1,10 +1,11 @@
+
 #[derive(Debug, Copy, Clone, PartialEq)]
 pub enum PieceColor {
     White,
     Black,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct GamePiece {
     pub color: PieceColor,
     pub crowned: bool,
@@ -12,40 +13,40 @@ pub struct GamePiece {
 
 impl GamePiece {
     pub fn new(color: PieceColor) -> GamePiece {
-        GamePiece {
-            color,
-            crowned: false,
+        GamePiece{
+            color, crowned: false
         }
     }
 
     pub fn crowned(p: GamePiece) -> GamePiece {
         GamePiece {
-            color: p.color,
-            crowned: true,
+            color: p.color, crowned: true
         }
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Copy)]
+// Coordinate as a tuple-struct
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Coordinate(pub usize, pub usize);
 
 impl Coordinate {
     pub fn on_board(self) -> bool {
+        // destructure Coordinate to access x and y
         let Coordinate(x, y) = self;
         x <= 7 && y <= 7
     }
 
+    // Produce an iterator of possible jump targets from this coordinate
     pub fn jump_targets_from(&self) -> impl Iterator<Item = Coordinate> {
         let mut jumps = Vec::new();
-        let Coordinate(x, y) = *self;
-
+        let Coordinate(x,y) = *self;
         if y >= 2 {
             jumps.push(Coordinate(x + 2, y - 2));
         }
-        jumps.push(Coordinate(x + 2, y + 2 ));
+        jumps.push(Coordinate(x + 2, y + 2));
 
         if x >= 2 && y >= 2 {
-            jumps.push(Coordinate(x - 2, y - 2));
+            jumps.push(Coordinate(x - 2, y -2 ));
         }
 
         if x >= 2 {
@@ -55,27 +56,29 @@ impl Coordinate {
         jumps.into_iter()
     }
 
+    // Product an iterator of possible move targets from this coordinate
     pub fn move_targets_from(&self) -> impl Iterator<Item = Coordinate> {
         let mut moves = Vec::new();
         let Coordinate(x, y) = *self;
-
         if x >= 1 {
             moves.push(Coordinate(x - 1, y + 1));
         }
         moves.push(Coordinate(x + 1, y + 1));
 
         if y >= 1 {
-            moves.push(Coordinate(x + 1, y - 1))
+            moves.push(Coordinate(x + 1, y -1 ));
         }
+
         if x >= 1 && y >= 1 {
-            moves.push(Coordinate(x - 1, y - 1));
+            moves.push(Coordinate(x -1 , y - 1));
         }
 
         moves.into_iter()
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Copy)]
+// Game move struct
+#[derive(Debug, Copy, Clone, PartialEq)]
 pub struct Move {
     pub from: Coordinate,
     pub to: Coordinate,
