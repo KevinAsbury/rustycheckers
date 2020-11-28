@@ -82,14 +82,51 @@ impl GameEngine {
         }
     }
 
-    // not yet implemented
-    fn valid_move(&self, g: &GamePiece, loc: &Coordinate, t: &Coordinate) -> bool {
-        true
+    fn valid_move(&self, p: &GamePiece, from: &Coordinate, to: &Coordinate) -> bool {
+        if !to.on_board() || !from.on_board() {
+            false
+        } else {
+            let Coordinate(tx, ty) = *to;
+            if let Some(_piece) = self.board[tx][ty] {
+                false
+            } else {
+                let Coordinate(_fx, fy) = *from;
+                let mut valid = false;
+                if ty > fy && p.color == PieceColor::White {
+                    // white moves down
+                    valid = true;
+                }
+                if ty < fy && p.color == PieceColor::Black {
+                    // black moves up
+                    valid = true;
+                }
+                if ty > fy && p.color == PieceColor::Black && p.crowned {
+                    // crowned black mv down
+                    valid = true;
+                }
+                if ty < fy && p.color == PieceColor::White && p.crowned {
+                    // crowned white mv up
+                    valid = true;
+                }
+                valid
+
+            }
+        }
     }
 
-    // not yet implemented
-    fn valid_jump(&self,  g: &GamePiece, loc: &Coordinate, t: &Coordinate) -> bool{
-        true
+    fn valid_jump(&self, p: &GamePiece, from: &Coordinate, to: &Coordinate) -> bool{
+        if !to.on_board() || !from.on_board() {
+            false
+        } else {
+            let Coordinate(x, y) = *from;
+            let Coordinate(tx, ty) = *to;
+
+            let midpiece = self.midpiece(x, y, tx, ty);
+            match midpiece {
+                Some(mp) if mp.color != p.color => true,
+                _ => false,
+            }
+        }
     }
 
     // not yet implemented
@@ -103,9 +140,25 @@ impl GameEngine {
         true
     }
 
-    // not yet implemented
-    fn midpiece_coordinate(&self, fx: usize, fy: usize, tx: usize, ty: usize) -> Option<Coordinate> {
-        Some(Coordinate(0, 0))
+    fn midpiece_coordinate(&self, x: usize, y: usize, tx: usize, ty: usize) -> Option<Coordinate> {
+        if tx == x + 2 && ty == y + 2 {
+            Some(Coordinate(x + 1, y + 1))
+        } else if x >= 2 && y >= 2 && tx == x - 2 && ty == y - 2 {
+            Some(Coordinate(x - 1, y - 1))
+        } else if x >= 2 && tx == x - 2 && ty == y + 2 {
+            Some(Coordinate(x - 1, y + 1))
+        } else if y >= 2 && tx == x + 2 && ty == y - 2 {
+            Some(Coordinate(x + 1, y - 1))
+        } else {
+            None
+        }
+    }
+
+    fn midpiece(&self, x: usize, y: usize, tx: usize, ty: usize) -> Option<GamePiece> {
+        match self.midpiece_coordinate(x, y, tx, ty) {
+            Some(Coordinate(x, y)) => self.board[x][y],
+            None => None,
+        }
     }
 
     pub fn move_piece(&mut self, mv: &Move) -> Result<MoveResult, ()> {
